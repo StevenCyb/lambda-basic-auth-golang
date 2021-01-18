@@ -1,0 +1,48 @@
+service: lambda-basic-auth-golang
+app: lambda-basic-auth-golang
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: go1.x
+  # stage: dev <-- setted by make
+  memorySize: 128
+  region: eu-central-1
+  role: arn:aws:iam::642865591233:role/AWS_Lambda_FullAcces
+  environment: # Credentials normally not stored in the env
+    USERNAME: admin
+    PASSWORD: SomePassword
+
+package:
+  exclude:
+    - ./**
+  include:
+    - ./bin/**
+
+functions:
+  authorize:
+    handler: bin/auth
+    description: Function for basic auth.
+  secured_greeting:
+    handler: bin/secured_greeting
+    description: Function greet after login.
+    events:
+      - http:
+          path: /
+          method: get
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
+
+resources:
+  Resources:
+    GatewayResponse:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.WWW-Authenticate: "'Basic'"
+        ResponseType: UNAUTHORIZED
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        StatusCode: '401'

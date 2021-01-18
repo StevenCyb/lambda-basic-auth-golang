@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+      golang: 1.15
+    commands:
+      - apt-get update -y && apt-get -y install make
+  build:
+    commands:
+      - then make test 2>&1 | tee test_results.txt;
+      - case "$(cat test_results.txt)" in *"FAIL"*) exit 1 ;;  esac 
+      - make build
+      - make deploy-dev
+
+artifacts:
+  files:
+    - '**/*'

@@ -1,0 +1,22 @@
+# Serverless directories
+.serverless
+.dynamodb
+
+# NodeJS stuff
+.node_modules
+.package-lock.json
+
+# NodeJS
+node_modules/
+package-lock.json
+
+# golang output binary directory
+bin
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
