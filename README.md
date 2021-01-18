@@ -3,6 +3,8 @@ After a long searching for a basic auth example for Lambda with Golang, I came a
 Since it did not quite suit my requirements, I also derived a solution for my needs.
 
 ## What does this project contain
+This project use the Serverless Framework.
+
 This example contains a basic auth handler and a greeting page. 
 The username and password are set in the environment variables of `serverless.yaml`.
 **This should not be done in production!**
